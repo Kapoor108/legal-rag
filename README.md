@@ -1,4 +1,4 @@
-# Antigravity Legal RAG
+# Legal RAG
 
 > A production-grade **Retrieval-Augmented Generation** system for US legal research — semantic search across IRS tax forms, US Public Laws, Federal Court Judgments, and Law Review Commentary powered by Google Gemini embeddings and Groq LLM.
 
@@ -110,8 +110,8 @@ A built-in **Golden Set evaluation pipeline** grades the system on faithfulness 
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/Kapoor108/US-RAG.git
-cd US-RAG
+git clone https://github.com/Kapoor108/legal-rag.git
+cd legal-rag
 npm install
 ```
 
@@ -265,7 +265,7 @@ See [RENDER_DEPLOYMENT.md](./RENDER_DEPLOYMENT.md) for the full step-by-step gui
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
 
