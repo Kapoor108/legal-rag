@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RAG API Test</title>
+    <style>
+        body { font-family: monospace; padding: 20px; max-width: 800px; margin: 0 auto; }
+        button { padding: 10px 20px; font-size: 14px; cursor: pointer; margin: 5px; }
+        .result { margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 5px; white-space: pre-wrap; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+        input { padding: 8px; width: 100%; box-sizing: border-box; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>RAG System API Test</h1>
+    
+    <div>
+        <label>Query:</label>
+        <input type="text" id="query" value="What is Form 1040 used for?" />
+        
+        <label>Alpha (0-1):</label>
+        <input type="number" id="alpha" value="0.7" min="0" max="1" step="0.1" />
+        
+        <button onclick="testQuery()">Test Query API</button>
+        <button onclick="testDocuments()">Test Documents API</button>
+        <button onclick="testQdrant()">Test Qdrant Direct</button>
+    </div>
+    
+    <div id="result" class="result" style="display:none;"></div>
+    
+    <script>
+        function showResult(data, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result ' + (isError ? 'error' : 'success');
+            resultDiv.textContent = JSON.stringify(data, null, 2);
+        }
+        
+        async function testQuery() {
+            const query = document.getElementById('query').value;
+            const alpha = parseFloat(document.getElementById('alpha').value);
+            
+            try {
+                const response = await fetch('/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, alpha, topK: 5 })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    showResult({ error: data.error || 'Failed', status: response.status }, true);
+                    return;
+                }
+                
+                showResult({
+                    answer: data.answer,
+                    citations: data.citations?.length || 0,
+                    chunks: data.retrievedChunks?.length || 0,
+                    metadata: data.metadata,
+                    full_citations: data.citations
+                });
+                
+            } catch (error) {
+                showResult({ error: error.message, stack: error.stack }, true);
+            }
+        }
+        
+        async function testDocuments() {
+            try {
+                const response = await fetch('/api/documents');
+                const data = await response.json();
+                
+                showResult({
+                    total_documents: data.length,
+                    sample: data.slice(0, 3),
+                    categories: [...new Set(data.map(d => d.category))]
+                });
+                
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        }
+        
+        async function testQdrant() {
+            try {
+                const response = await fetch('http://localhost:6333/collections/antigravity_legal');
+                const data = await response.json();
+                
+                showResult({
+                    status: data.result.status,
+                    points_count: data.result.points_count,
+                    indexed_vectors: data.result.indexed_vectors_count
+                });
+                
+            } catch (error) {
+                showResult({ error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>

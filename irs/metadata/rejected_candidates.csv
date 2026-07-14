@@ -1,0 +1,4 @@
+source_url,source_name,rejection_reason,detected_page_count,error_message,checked_at
+https://www.irs.gov/pub/irs-pdf/f1040sef.pdf,IRS — Tax Forms,pre_skip_html,,,2026-07-13T05:29:48.070609+00:00
+https://www.irs.gov/pub/irs-pdf/f1040sr2.pdf,IRS — Tax Forms,pre_skip_html,,,2026-07-13T05:29:52.898913+00:00
+https://www.irs.gov/pub/irs-pdf/fw2.pdf,IRS — Tax Forms,pre_skip_too_large(1317KB),,,2026-07-13T05:30:02.190270+00:00

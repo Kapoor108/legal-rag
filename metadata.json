@@ -1,0 +1,6 @@
+{
+  "name": "US Tax & Legal RAG",
+  "description": "High-precision page-aware US tax and Case Law research suite with hybrid vector/lexical search, citation Graph RAG, and automated golden set benchmarking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
